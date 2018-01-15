@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}注册界面{% endblock %}
+{% block style %}
+
+<link rel="stylesheet" href="/static/default/css/selfstyle.css" />
+
+{% endblock %}
+{% block body %}
+	<div id="top"><h1>用户信息修改</h1></div>
+
+<div class="form-bak">
+	<form method="post" action="/online/register/" onsubmit="adaptValue();">
+		<div class="left">
+			<div class="line" id="line_name">
+				<div class="info">
+					<strong>用户名</strong>
+					<span class="tips">只能由数字、文字或下划线组成<br />最多32个字符</span>
+				</div>
+				<div class="input">
+					<input type="text" name="aname" id="aname" onblur="v_name();" onkeyup="v_name();" />
+					<div class="none"><span></span></div>
+				</div>
+			</div>
+			<div class="line" id="line_email">
+				<div class="info">
+					<strong>邮箱</strong>
+					<span class="tips">您的邮箱</span>
+				</div>
+				<div class="input">
+					<input type="text" name="email" id="email" onblur="v_email();" onkeyup="v_email();"/>
+					<div class="none"><span></span></div>
+				</div>
+			</div>
+			<div class="line" id="line_passwd">
+				<div class="info">
+					<strong>密码</strong>
+					<span class="tips">6至16个字符</span>
+				</div>
+				<div class="input">
+					<input type="password" name="apasswd" id="apasswd" onblur="v_passwd();" onkeyup="v_passwd();" />
+					<div class="none"><span></span></div>
+				</div>
+			</div>
+			
+			<div class="line" id="line_repasswd">
+				<div class="info">
+					<strong>确认密码</strong>
+					<span class="tips">再次输入密码</span>
+				</div>
+				<div class="input">
+					<input type="password" name="arepasswd" id="arepasswd" onblur="v_repasswd();" onkeyup="v_repasswd();" />
+					<div class="none"><span></span></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="right">
+			<input type="submit" id="submit" value="完成注册" disabled="disabled"/>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+function enableSubmit(bool){
+	if(bool)$("#submit").removeAttr("disabled");
+	else $("#submit").attr("disabled","disabled");
+}
+
+function v_submitbutton(){
+	for(f in flags) if(!flags[f]) {
+		enableSubmit(false); 
+		return;
+	}
+	enableSubmit(true);
+}
+
+
+
+var flags = [false,false,false,false];
+
+
+var RegEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+
+function lineState(name,state,msg){
+	if(state=="none"){$("#line_"+name+" .input div").attr("class","none"); return;}
+	if(state=="corect"){$("#line_"+name+" .input div").attr("class","corect");return;}
+	$("#line_"+name+" .input span").text(msg);$("#line_"+name+" .input div").attr("class","error");
+}
+function v_name(){
+	var aname = $("#aname").val();
+	if(aname.length==0) {
+		lineState("name","error","用户名不能为空"); 
+		flags[1]=false;
+	}else{
+		if(aname.length>32) {
+			lineState("name","error","必须少于32个字符"); 
+			flags[1]=false;
+		}else{
+			lineState("name","corect",""); 
+			flags[1] = true;
+		}
+	}
+	v_submitbutton();
+}
+function v_email(){
+	var email = $("#email").val();
+	if(!RegEmail.test(email)) {lineState("email","error","邮箱格式不正确"); flags[0]=false;enableSubmit(false);}
+	else{lineState("email","corect","");flags[0] = true;}
+	v_submitbutton();
+}
+
+
+
+function v_passwd(){
+	var passwd = $("#apasswd").val();
+	if(passwd.length<6) {
+		lineState("passwd","error","必须多于或等于6个字符"); 
+		flags[2]=false;
+	}else{
+		if(passwd.length>16){
+			lineState("passwd","error","必须少于或等于16个字符"); 
+			flags[2]=false;
+		}else{
+			lineState("passwd","corect","");
+			flags[2] = true;
+		}
+	}
+	v_repasswd();
+	v_submitbutton();
+}
+
+function v_repasswd(){
+	if(!flags[2]) {
+		lineState("repasswd","none",""); 
+		return;
+	}
+	if($("#apasswd").val()!=$("#arepasswd").val()) {
+		lineState("repasswd","error","密码不一致"); 
+		flags[3]=false;
+	}else{
+		lineState("repasswd","corect","");
+		flags[3] = true;
+	}
+	v_submitbutton();
+}
+
+function adaptValue(){
+	return true;
+}
+</script>
+{% endblock %}

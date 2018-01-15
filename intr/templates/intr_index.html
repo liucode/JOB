@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}注册界面{% endblock %}
+{% block style %}
+
+<link rel="stylesheet" href="/static/default/css/selfstyle.css" />
+
+{% endblock %}
+{% block body %}
+	<div id="top"><h1>用户信息填写</h1></div>
+
+<div class="form-bak">
+	<form method="post" action="/intr/info/" onsubmit="adaptValue();">
+		<div class="left">
+			<div class="line" id="line_info">
+				<div class="info">
+					<strong>意向公司</strong>
+					<span class="tips"></span>
+				</div>
+				<div class="input">
+					<input type="text" name="comp" id="comp" >{{user_info.comp }}</input>
+					<div class="none"><span></span></div>
+				</div>
+			</div>
+			<div class="line" id="line_job">
+				<div class="info">
+					<strong>意向工作岗位</strong>
+					<span class="tips">可选：售前工程师，售后工程师等</span>
+				</div>
+				<div class="input">
+					<input type="text" name="job" id="job" "/>
+					<div class="none"><span></span></div>
+				</div>
+			</div>
+			<div class="line" id="line_edu">
+				<div class="info">
+					<strong>学校</strong>
+					<span class="tips">6至16个字符</span>
+				</div>
+				<div class="input">
+					<input type="text" name="edu" id="edu" />
+					<div class="none"><span></span></div>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="right">
+			{% if user_info.comp %}
+				<input type="submit" id="submit" value="完成信息" disabled="disabled" />
+			{% else %}
+				<input type="submit" id="submit" value="完成信息" disabled="disabled"/>
+			{% endif %}
+		</div>
+	</form>
+</div>
+
+
+{% endblock %}

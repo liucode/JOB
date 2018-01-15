@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang ="zh-CN">
+<head>
+   <title>主界面</title>
+   {% load staticfiles %}
+   <link href="{%static "bootstrap-3.3.5-dist/css/bootstrap.min.css"%}" rel="stylesheet">
+   <script src="{%static "bootstrap-3.3.5-dist/js/jquery-2.1.1.min.js"%}"></script>
+   <script src="{%static "bootstrap-3.3.5-dist/js/bootstrap.min.js"%}"></script>
+   <script type="text/javascript" src="{%static "js/jquery.js"%}"></script>
+   <script type="text/javascript" src="{%static "js/echarts.min.js"%}"></script>
+   <script type="text/javascript" src="{%static "js/pay.js"%}"></script>
+    <script type="text/javascript" src="{%static "js/table.js"%}"></script>
+    <link href="/static/bootstrap-3.3.5-dist/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="/static/css/selfstyle.css" />
+</head>
+{% block style %}
+{% endblock %}
+<body>
+<div class="container" id = "containermain">
+
+<div class="row">
+<h1 align="center">就业相关信息 </h1>
+</div>
+{% block head %}
+<div class="container">
+<nav class="navbar navbar-default">
+<ul id="myTabs" class="nav navbar-nav">
+   <li class="active">
+      <a href="../../" >
+       	 主页
+     </a>
+   </li>
+   <li> <a href="../../pay/index"> 查看薪资信息  </a></li>
+   <li class="dropdown">
+      <a href="#" id="myTabDrop1" class="dropdown-toggle" 
+         data-toggle="dropdown">个人查询
+         <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+         <li><a href="../../intr/index/" tabindex="-1" >个人主页</a></li>
+         <li><a href="../../" tabindex="-1" >提交信息</a></li>
+      </ul>
+   </li>
+    </ul>
+ 
+         {% if request.session.islogin %}
+            <form class="navbar-form navbar-right">
+			<a href="/online/changehead_image/"><img class="imgtest" src="/static/media/{{ request.session.head_image }}" width="30px" height="30px"/></a>
+            {% ifequal request.session.user_info.role "管理员"%}
+            <span style="color:#000">管理员,</span>
+            {% endifequal %}
+            <span style="color:#000">您好：{{ request.session.user_info.name }}</span>
+            <span style="color:#000">豆：{{ request.session.user_info.beans }}</span>
+			<a class="btn btn-link" href="/online/changepasswd">修改密码</a>
+            <a class="btn btn-success" href="/online/logout">退出</a>
+			
+            </form>
+        {% else %}
+            <form class="navbar-form navbar-right" action="/online/login/" method="post">
+                <div class="form-group">
+                  <input type="text" name="name" id="name" placeholder="username" class="form-control">
+                </div>
+                <div class="form-group">
+                  <input type="password" name="passwd" id="passwd" placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success" >登录</button>
+                <a class="btn btn-success" href="/online/register/">注册</a>
+				<a class="btn btn-link" href="/online/getpasswd/">忘记密码,点击这里</a>
+            </form>
+
+        {% endif %}
+   </nav>
+   
+   
+</div>
+{% endblock %}
+{% block body %}
+
+
+{% endblock %}
+</div>
+
+</body>
+
+</html>	
