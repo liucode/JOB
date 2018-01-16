@@ -10,20 +10,19 @@
    <script type="text/javascript" src="{%static "js/jquery.js"%}"></script>
    <script type="text/javascript" src="{%static "js/echarts.min.js"%}"></script>
    <script type="text/javascript" src="{%static "js/pay.js"%}"></script>
-    <script type="text/javascript" src="{%static "js/table.js"%}"></script>
-    <link href="/static/bootstrap-3.3.5-dist/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+   <script type="text/javascript" src="{%static "js/table.js"%}"></script>
+   <link href="/static/bootstrap-3.3.5-dist/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
    <link rel="stylesheet" href="/static/css/selfstyle.css" />
+   <style type="text/css">
+    html,body{
+    height:100%;
+    margin:0px;
+   }
+   </style>
 </head>
-{% block style %}
-{% endblock %}
 <body>
-<div class="container" id = "containermain">
-
-<div class="row">
-<h1 align="center">就业相关信息 </h1>
-</div>
+<div class="container-fluid" id = "containermain" >
 {% block head %}
-<div class="container">
 <nav class="navbar navbar-default">
 <ul id="myTabs" class="nav navbar-nav">
    <li class="active">
@@ -31,9 +30,13 @@
        	 主页
      </a>
    </li>
-   <li> <a href="../../pay/index"> 查看薪资信息  </a></li>
+    <li> <a href="../../pay/index"> 查看薪资信息  </a></li>
     <li> <a href="../../company/index"> 查看公司信息  </a></li>
-    <li><a href="../../intr/index/" tabindex="-1" >个人主页</a></li>
+    <li><a href="../../intr/index/" >个人主页</a></li>
+    <li><a href="../../" >个人分析</a></li>
+    <li><a href="../../" >简历分析</a></li>
+    <li><a href="../../" >讨论区</a></li>
+    <li><a href="../../" >充值专区</a></li>
     <li><a href="../../" tabindex="-1" >更多信息</a></li>
  </ul>
          {% if request.session.islogin %}
@@ -63,9 +66,6 @@
 
         {% endif %}
    </nav>
-   
-   
-</div>
 {% endblock %}
 {% block body %}
 
