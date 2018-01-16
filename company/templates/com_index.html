@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+ <div class="input-group">
+    <input type="text" class="form-control" name="comtext" placeholder="填入公司名" id="comtext">
+    <span class="input-group-btn">
+     <button type="button" class="btn btn-primary " data-toggle="modal"  data-show="true" id="mycom">go</button>
+    </span>
+    </div>
+ </div><!-- /input-group -->
+</div>
+
+
+<div class="container">
+{% if infos%}
+
+<h1>{{info}}</h1>
+<div class="panel panel-primary">
+  <!-- Default panel contents -->
+  <div class="panel-heading">{{infos.1}} </div>
+  <div class="panel-body">
+    <p>{{infos.2}}</p>
+  </div>
+
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item">人数:{{infos.4}}</li>
+    <li class="list-group-item">地点:{{infos.5}}</li>
+    <li class="list-group-item">网址:{{infos.6}}</li>
+    <li class="list-group-item">具体地址:{{infos.7}}</li>
+  </ul>
+</div>
+
+<div container>
+<div id="main1" style="height:400px;"></div>
+</div>
+{%endif%}
+</div>
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('main1'));
+       // var company = {{infos|safe}}
+        	var data = {{jsdata|safe}};
+option1 = {
+    title: {
+        text: '公司相关信息'
+    },
+    legend: {
+        right: 10,
+        data:[{{jsname|safe}}]
+    },
+    xAxis: {
+        splitLine: {
+            lineStyle: {
+                type: 'dashed'
+            }
+        },
+        name:"面试难度",
+    },
+    yAxis: {
+        splitLine: {
+            lineStyle: {
+                type: 'dashed'
+            }
+        },
+        scale: true,
+        name:"评分",
+    },
+    series: [ {
+        data: data,
+        type: 'scatter',
+        symbolSize: function (data) {
+            return Math.sqrt(data[2]);
+        },
+        label: {
+            emphasis: {
+                show: true,
+                formatter: function (param) {
+                    return param.data[3];
+                },
+                position: 'top'
+            }
+        },
+        itemStyle: {
+            normal: {
+                    shadowBlur: 20,
+                    shadowOffsetX: 0,
+                    color: function(params) { 
+                    var colorList = ['#C33531','#EFE42A','#64BD3D','#EE9201','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ]; 
+                    return colorList[params.dataIndex] 
+                },
+            }
+        }
+    }]
+	};
+	        myChart1.setOption(option1);
+    </script>
+{% load staticfiles %}
+<script  language="JavaScript" src="{%static "/js/pay.js"%}"></script>
+{% endblock %}

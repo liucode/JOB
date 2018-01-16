@@ -7,7 +7,8 @@
 
 {% endblock %}
 {% block body %}
-	<div id="top"><h1>用户信息填写</h1></div>
+{% ifequal flag 1%}
+<div id="top"><h1>用户信息填写</h1></div>
 
 <div class="form-bak">
 	<form method="post" action="/intr/info/" onsubmit="adaptValue();">
@@ -18,7 +19,7 @@
 					<span class="tips"></span>
 				</div>
 				<div class="input">
-					<input type="text" name="comp" id="comp" >{{user_info.comp }}</input>
+					<input type="text" name="comp" id="comp" ></input>
 					<div class="none"><span></span></div>
 				</div>
 			</div>
@@ -46,14 +47,24 @@
 		</div>
 		
 		<div class="right">
-			{% if user_info.comp %}
-				<input type="submit" id="submit" value="完成信息" disabled="disabled" />
-			{% else %}
-				<input type="submit" id="submit" value="完成信息" disabled="disabled"/>
-			{% endif %}
+			
+				<input type="submit" id="submit" value="完成信息"  />
+			
 		</div>
 	</form>
 </div>
-
-
+{%else%}
+<div container>
+<ul class="list-group">
+  <li class="list-group-item list-group-item-success">意向公司 </li>
+  <li class="list-group-item list-group-item-success">{{user_info.comp }}</li>
+  <li class="list-group-item list-group-item-warning"></li>
+  <li class="list-group-item list-group-item-success">意向工作岗位</li>
+  <li class="list-group-item list-group-item-success">{{user_info.job }}</li>
+  <li class="list-group-item list-group-item-warning"></li>
+  <li class="list-group-item list-group-item-success">学校</li>
+  <li class="list-group-item list-group-item-success">{{user_info.edu }}</li>  
+</ul>
+</div>
+{% endifequal %}
 {% endblock %}

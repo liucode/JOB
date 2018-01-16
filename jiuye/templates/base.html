@@ -32,18 +32,10 @@
      </a>
    </li>
    <li> <a href="../../pay/index"> 查看薪资信息  </a></li>
-   <li class="dropdown">
-      <a href="#" id="myTabDrop1" class="dropdown-toggle" 
-         data-toggle="dropdown">个人查询
-         <b class="caret"></b>
-      </a>
-      <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
-         <li><a href="../../intr/index/" tabindex="-1" >个人主页</a></li>
-         <li><a href="../../" tabindex="-1" >提交信息</a></li>
-      </ul>
-   </li>
-    </ul>
- 
+    <li> <a href="../../company/index"> 查看公司信息  </a></li>
+    <li><a href="../../intr/index/" tabindex="-1" >个人主页</a></li>
+    <li><a href="../../" tabindex="-1" >更多信息</a></li>
+ </ul>
          {% if request.session.islogin %}
             <form class="navbar-form navbar-right">
 			<a href="/online/changehead_image/"><img class="imgtest" src="/static/media/{{ request.session.head_image }}" width="30px" height="30px"/></a>
@@ -51,7 +43,7 @@
             <span style="color:#000">管理员,</span>
             {% endifequal %}
             <span style="color:#000">您好：{{ request.session.user_info.name }}</span>
-            <span style="color:#000">豆：{{ request.session.user_info.beans }}</span>
+            <span style="color:#000">豆：{{ request.session.beans }}</span>
 			<a class="btn btn-link" href="/online/changepasswd">修改密码</a>
             <a class="btn btn-success" href="/online/logout">退出</a>
 			

@@ -10,6 +10,11 @@ reload(sys)
 sys.setdefaultencoding('utf8')   
 def index(req):
     if req.method == 'GET':
+        try:
+            islogin = req.session['islogin']
+        except Exception,e:
+            msg = '请登录'
+            return render(req,'msg.html', locals())
         if req.session['islogin'] == True:
             user_info = req.session['user_info']
             condition = {'name': user_info['name']}
@@ -17,7 +22,12 @@ def index(req):
             user_info['job'] = r.job
             user_info['edu'] = r.edu
             user_info['comp'] = r.comp
-            return  render(req,"intr_index.html", locals())
+            if cmp(r.comp,"")!=0 or cmp(r.edu,"")!=0 or cmp(r.job,"")!=0:
+                flag = 0
+                return  render(req,"intr_index.html", locals())
+            else:
+                flag = 1
+                return  render(req,"intr_index.html", locals())
         else:
             msg = '请登录'
             return render(req,'msg.html', locals())

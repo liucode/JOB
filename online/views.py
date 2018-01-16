@@ -1,5 +1,5 @@
 #encoding:utf-8
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,render
 from django.http import HttpResponseRedirect
 from online.models import User
 from django.template import RequestContext
@@ -39,7 +39,7 @@ def login(req):
     msg = 'login page'
     if req.method == 'GET':
         msg = '请求方式错误'
-        return render_to_response('msg.html', locals())
+        return render(req,'msg.html', locals())
 
     name = req.POST['name']
     passwd = req.POST['passwd']      
@@ -49,7 +49,7 @@ def login(req):
         r = User.objects.get(**condition)
     except User.DoesNotExist:
         msg="用户名不存在，请先注册"
-        return render_to_response('msg.html', locals())
+        return render(req,'msg.html', locals())
     else:
         if r.passwd==passwd:
             req.session['islogin'] = True
@@ -58,7 +58,7 @@ def login(req):
             user_info['name'] = r.name
             user_info['email'] = r.email
             user_info['role'] = r.role
-            user_info['beans'] = r.beans
+            req.session['beans'] = r.beans
             req.session['head_image'] = r.head_image.name
             if(r.role == u"管理员"):
                 req.session['role']=True
@@ -69,7 +69,7 @@ def login(req):
             return HttpResponseRedirect('/')
         else:
             msg = '密码错误！'
-            return render_to_response('msg.html', locals())
+            return render(req,'msg.html', locals())
     
 def logout(req):
     msg = 'logout page'
@@ -82,7 +82,7 @@ def register(req):
     msg = 'register page'
     if req.method == 'GET':
         status = False
-        return render_to_response('user_register.html', locals())
+        return render(req,'user_register.html', locals())
     else:
         status = True
         name = req.POST['aname']
@@ -94,16 +94,16 @@ def register(req):
             msg = '注册完成，请直接登录！'
         else:
             msg = '用户名被人注册过了！'
-        return render_to_response('msg.html', locals())
+        return render(req,'msg.html', locals())
 
 def changepasswd(req):
     if not req.session['islogin']:
         msg = '你当前还没有登录，请先登录！'
-        return render_to_response('msg.html', locals())
+        return render(req,'msg.html', locals())
     msg='changepasswd page'
     if req.method == 'GET':
         status = False
-        return render_to_response('changepasswd.html', locals())
+        return render(req,'changepasswd.html', locals())
     else:
         status=True
         passwd = req.POST['passwd']
@@ -111,13 +111,13 @@ def changepasswd(req):
         User.objects.filter(name=name).update(passwd=passwd)
         req.session['islogin']=False
         msg="密码修改成功，请重新登录！"
-        return render_to_response('msg.html', locals())
+        return render(req,'msg.html', locals())
     
 def getpasswd(req):
     msg='getpasswd page'
     if req.method == 'GET':
         status = False
-        return render_to_response('getpasswd.html', locals())
+        return render(req,'getpasswd.html', locals())
     else:
         status=True
         name = req.POST['name']
@@ -125,14 +125,14 @@ def getpasswd(req):
             r = User.objects.get(name = name)
         except User.DoesNotExist:
             msg="用户名不存在，请先注册！"
-            return render_to_response('msg.html', locals())
+            return render(req,'msg.html', locals())
         passwd = r.passwd
         email = r.email
         sub = "能耗管理系统密码找回"
         content = "您的密码是："+str(passwd)
         send_mail(email,sub,content)
         msg="密码已经发送到您的邮箱，请查收！"
-        return render_to_response('msg.html', locals())
+        return render(req,'msg.html', locals())
     
 def changehead_image(req):
     if req.method == 'GET':

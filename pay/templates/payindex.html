@@ -8,6 +8,9 @@
     </span>
     </div>
  </div><!-- /input-group -->
+ </div>
+ <p/>
+<!--
 <div class="container">
 	<div class="row" >
 	<a id="btn0"></a>
@@ -21,53 +24,38 @@
 	<input id="changePage" type="text" size="1" maxlength="4"/>
 	<a>页 </a>
 	<a  href="#" id="btn5">跳转</a>
-	<div>
+	</div>
 </div>
 
-</div>
-
+//-->
 
 <div class="container">
-<table class="table table-bordered" id = "mytable">
      {%if infos%}
-      <tr>
-  		 <th>公司</th>
-         <th>岗位</th>
-    	 <th>地点</th>
-    	 <th>薪资</th>
-    	 <th>可信度</th>
-    	 <th>时间</th>
-    	 <th>其他说明</th>
-    	 <th>分类</th>
-  	 </tr>
- 	 {% for info in infos%}	
- 	     <tr>
-    	 <th> {{info.0}}</th>
-    	 <th>{{info.1}}</th>
-    	 <th> {{info.2}}</th>
-    	 <th>{{info.3}}</th>
-    	 <th> {{info.4}}</th>
-    	 <th>{{info.5}}</th>
-    	 <th> {{info.6}}</th>
-    	 <th>{{info.7}}</th>
-    </tr>
+     {% for info in infos%}	
+<div class="panel panel-primary">
+     <div class="panel-heading">
+     		<h3 id="myinfo">公司：&nbsp{{info.0}}&nbsp地点：&nbsp{{info.2}}&nbsp岗位：&nbsp{{info.1}}</h3>
+     		<div style="float:right;">
+     		  	<button type="button" class="btn btn-danger btn-lg" id="jianbtn">不可信</button>
+  				<button type="button" class="btn btn-success btn-lg" id="jiabtn">可信</button>
+  				<h2 id="retsult"></h2>
+     		</div>
+     </div>
+     <div class="panel-body">
+    	<p id="myintr">{{info.6}}</p>
+  	 </div>
+  <!-- List group -->
+  <ul class="list-group">
+    <li class="list-group-item">薪资：{{info.3}}</li>
+  </ul>
+     </div>
     {%endfor%}
   	{%endif%}
-  	
-</table>
-
-
-
-
 </div>
 
-
-
-
-
-
-
-
 {% load staticfiles %}
-<script  language="JavaScript" src="{%static "/js/pay.js"%}"></script>
+<script  language="JavaScript" src="{%static "/js/pay.js"%}">
+
+
+</script>
 {% endblock %}
