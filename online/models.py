@@ -12,6 +12,12 @@ class User(models.Model):
     comp = models.CharField(max_length=50)
     job = models.CharField(max_length=50)
     edu = models.CharField(max_length=50)
-    def __unicode__(self):
-        return self.username
+    
+    
+    mycomp = models.CharField(max_length=50)
+    myjob = models.CharField(max_length=50)
+    mymoney = models.CharField(max_length=50)
+    myintr = models.CharField(max_length=254)
+    mylocal = models.CharField(max_length=50)
+    mymoney = models.CharField(max_length=255)
 # Create your models here.

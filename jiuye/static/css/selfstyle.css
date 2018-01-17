@@ -1,7 +1,9 @@
 *{font-family:"΢���ź�","����","����";color:#333;}
 a{color:#069;}
 body{margin:50px;padding:0;background:#ddd;}
-.form-bak{width:800px;height:400px;margin:40px auto;background:#eee;border-radius:10px;box-shadow:0 2px 8px #999;}
+.form-bak{width:800px;height:400px;margin:10px auto;background:#eee;border-radius:10px;box-shadow:0 2px 8px #999;}
+.form-sbak{width:100%;height:300px;margin:10px auto;background:#eee;border-radius:10px;box-shadow:0 2px 8px #999;}
+.form-lbak{width:100%;height:500px;margin:10px auto;background:#eee;border-radius:10px;box-shadow:0 2px 8px #999;}
 .left{float:left;width:500px;height:400px;}
 .line{width:100%;height:80px;margin:16px 0 0 0;}
 .info{float:left;height:100%;width:200px;}

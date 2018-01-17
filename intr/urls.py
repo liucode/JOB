@@ -4,4 +4,5 @@ app_name = 'intr'
 urlpatterns = [
     url(r'^index/$',views.index,name = 'index'),
     url(r'^info/$',views.info,name = 'info'),
+    url(r'^money/$',views.money,name = 'money'),
 ]
