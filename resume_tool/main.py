@@ -128,7 +128,10 @@ def runall(path):
         fout.close()
         
 if __name__ == '__main__':
-    filename = r"C:\Users\liu\workspace\jiuye\src\resume_tool\lcy.doc"
+    filename = r"C:\Users\liu\workspace\jiuye\src\resume_tool\中国农业大学-郭享-硕士-女-云计算.docx"
     path = sys.path[0]
-    runall(path)
-    #handle_document(filename.decode('utf-8','ignore'))
+    print path
+    filename = path+"\\柳春懿_西北工业大学_硕士.doc"
+    #runall(path)
+    print filename
+    handle_document(filename.decode('utf-8','ignore'))

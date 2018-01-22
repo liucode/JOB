@@ -1,11 +1,11 @@
 # encoding:utf-8
 import re
 
-degree_str1 = u"(初中|高中|职高|中专|技校|大专|本科|硕士研究生|在职研究生|工程硕士|专业硕士|博士研究生|博士在读|MBA硕士|MBA|EMBA|工商管理硕士|工学学士|访问学者|博士后|研究生|硕士|博士|学士)"
+degree_str1 = u"(一等奖学金|二等奖学金|三等奖学金|优秀毕业生|优良毕业生|国家励志奖学金|学生标兵|优秀学生|优秀本科生|三好学生|优秀学生干部)"
 degree_pattern1 = re.compile(degree_str1)
 
 # 抽取学位信息,并将日期按照顺序排列存入list
-def degree_extract(str):
+def ship_extract(str):
     result_list = []
     school_list = degree_pattern1.findall(str)
     for d in school_list:
@@ -30,15 +30,14 @@ def process(input_file_path):
             line = line.strip().decode('utf-8') # 设置编码格式
         except:
             line = line.strip().decode('gb2312')   
-        print line
-        degree_list = degree_extract(line)
+        degree_list = ship_extract(line)
         for d in degree_list:
             print d
         print '-------'
 
 def main():
     print 'this is main'
-    input_file_path = 'data/samples'
+    input_file_path = 'lcy.txt'
     result_dic = process(input_file_path)
 
 if __name__ == '__main__':

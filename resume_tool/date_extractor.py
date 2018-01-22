@@ -63,7 +63,10 @@ def process(input_file_path):
     items = []
     items.__sizeof__()
     for line in open(input_file_path, 'r'):
-        line = line.strip().decode('utf-8') #一定要
+        try:
+            line = line.strip().decode('utf-8') # 设置编码格式
+        except:
+            line = line.strip().decode('gb2312')   
         print line
         # normalize_date(line)
         date_list = date_extract(line)

@@ -20,4 +20,6 @@ class User(models.Model):
     myintr = models.CharField(max_length=254)
     mylocal = models.CharField(max_length=50)
     mymoney = models.CharField(max_length=255)
+    
+    myresume = models.CharField(max_length=255,null=True)
 # Create your models here.

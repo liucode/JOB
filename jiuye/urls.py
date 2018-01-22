@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^online/', include('online.urls')),
     url(r'^pay/', include('pay.urls')), 
     url(r'^intr/', include('intr.urls')), 
-     url(r'^company/', include('company.urls')), 
+    url(r'^company/', include('company.urls')), 
+    url(r'^resume/', include('resume.urls')), 
 ]
