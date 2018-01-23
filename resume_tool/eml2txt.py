@@ -7,12 +7,8 @@ import logging
 import chardet
 import html2text
 import re
-
-import sys #这里只是一个对sys的引用，只能reload才能进行重新加载
-stdi,stdo,stde=sys.stdin,sys.stdout,sys.stderr 
-reload(sys) #通过import引用进来时,setdefaultencoding函数在被系统调用后被删除了，所以必须reload一次
-sys.stdin,sys.stdout,sys.stderr=stdi,stdo,stde 
-sys.setdefaultencoding('utf-8')
+from tools import *
+addsys()
 
 
 def get_charset(message):
@@ -44,10 +40,10 @@ def handle_emlfiles(emlfile):
     # print chardet.detect(emltext)
     if (chardet.detect(emltext)['encoding'] == 'GB2312'):
         str_file = html2text.html2text(emltext.decode("gbk", 'ignore').encode("utf-8", 'ignore'))
-    elif ((chardet.detect(emltext)['encoding'] == 'utf-8') or (
+    if ((chardet.detect(emltext)['encoding'] == 'utf-8') or (
                 chardet.detect(emltext)['encoding'] == 'UTF-8-SIG')):
         str_file = html2text.html2text(emltext)
-        #print str_file
+    #print str_file
     return str_file
     # for t in str_file:
     #     txt = re.sub(r'[# * | ]?', '', t)  # drop #*
