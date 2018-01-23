@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ["39.104.100.154","10.13.28.252","127.0.0.1"]
 # Application definition
 
 INSTALLED_APPS = [
+    'resume_tool',
     'resume',
     'company',
     'intr',

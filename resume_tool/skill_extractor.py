@@ -2,7 +2,7 @@
 import re
 import sys
 from bgtool.codeinit import *
-
+from tools import *
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -12,7 +12,12 @@ input_encode = 'utf-8'
 # 抽取技能信息,并将日期按照顺序排列存入list
 def skill_extract(str):
     result_list = []
-    jieba.load_userdict(sys.path[0]+"\\resume_tool\\skill_dic")
+    dic = ""
+    if cmp(get_os(),"n")==0:
+        dic = sys.path[0]+"\\resume_tool\\skill_dic"
+    else:
+        dic = sys.path[0]+"/resume_tool/skill_dic"
+    jieba.load_userdict(dic)
     wordcut = WordCut(str)
     for word, flag in wordcut.cutWords():
         if cmp(flag,"skill")==0:

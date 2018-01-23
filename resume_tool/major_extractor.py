@@ -1,12 +1,19 @@
 # encoding:utf-8
 import re
 import sys
+from tools import *
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 input_encode = 'utf-8'
+
+dic = ""
+if cmp(get_os(),"n")==0:
+    dic = sys.path[0]+"\\resume_tool\\major_dic"
+else:
+    dic = sys.path[0]+"/resume_tool/major_dic"
 # 构建专业知识库
-major_set = set([v.strip().decode('utf-8') for v in open(sys.path[0]+"\\resume_tool\\major_dic", 'r')])
+major_set = set([v.strip().decode('utf-8') for v in open(dic, 'r')])
 
 # 将items（list）所有“!*!!”元素，过滤掉
 def drop_null(items):

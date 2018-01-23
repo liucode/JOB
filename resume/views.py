@@ -29,11 +29,9 @@ def index(req):
             user_info = req.session['user_info']
             condition = {'name': user_info['name']}
             r = User.objects.get(**condition)
-            print r.myresume
-            if r.myresume != None:
+            if r.myresume != None and len(r.myresume)!=0:
                 flag = 0
-                path = sys.path[0]
-                result_list = process(path+"\\"+r.myresume+'.txt')
+                result_list = process(r.myresume)
                 info_list = result_list[0]
                 ship_list = result_list[1]
                 skill_list = result_list[2]
@@ -56,18 +54,23 @@ def index(req):
         
 def upload_file(req):  
     if req.method == "POST":    # 请求方法为POST时，进行处理  
+        user_info = req.session['user_info']
+        user_name = user_info['name']
         myFile =req.FILES.get("myfile", None)    # 获取上传的文件，如果没有文件，则默认为None  
         if not myFile:  
-            return HttpResponse("no files for upload!")  
-        path = sys.path[0]
-        filename = path+"\\"+myFile.name
+            return HttpResponse("no files for upload!") 
+        filename = ""
+        if cmp(get_os(),"n")==0:
+            filename = sys.path[0]+"\\"+user_name+myFile.name
+        else:
+            filename = sys.path[0]+"/"+user_name+myFile.name
         destination = open(filename,'wb+')    # 打开特定的文件进行二进制的写操作  
         for chunk in myFile.chunks():      # 分块写入文件  
             destination.write(chunk)  
         destination.close()
-        result_list,myresume = runresume(myFile.name)
-        name = req.session['user_info']['name']
-        User.objects.filter(name=name).update(myresume=myresume)
+        print filename
+        result_list,myresume = runresume(filename)
+        User.objects.filter(name=user_name).update(myresume=myresume)
         info_list = result_list[0]
         ship_list = result_list[1]
         skill_list = result_list[2]

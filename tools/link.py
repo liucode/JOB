@@ -14,12 +14,7 @@ import os
 import time 
 import thread
 
-def get_os(): 
-  os = platform.system() 
-  if os == "Windows": 
-    return "n"
-  else: 
-    return "c"
+
     
 def ping_ip(ip_str): 
     cmd = ["ping", "-{op}".format(op=get_os()), 

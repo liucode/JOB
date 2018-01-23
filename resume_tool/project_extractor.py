@@ -1,6 +1,7 @@
 # encoding:utf-8
 import re
 import sys
+from tools import *
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -9,7 +10,13 @@ input_encode = 'utf-8'
 major_set = []
 score = {}
 
-for v in  open(sys.path[0]+"\\resume_tool\\project_dic", 'r'):
+dic = ""
+if cmp(get_os(),"n")==0:
+    dic = sys.path[0]+"\\resume_tool\\project_dic"
+else:
+    dic = sys.path[0]+"/resume_tool/project_dic"
+    
+for v in  open(dic, 'r'):
     vs = v.split()
     major_set.append(vs[0])
     score[vs[0]] = vs[1]

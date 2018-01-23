@@ -3,7 +3,7 @@ Created on 2018-1-11
 
 @author: corey
 '''
-
+import platform
 import MySQLdb
 class MynewcoderDB:
     def __init__(self):
@@ -27,3 +27,4 @@ class MynewcoderDB:
     def close(self):
         self.db_cur.close()
         self.db_conn.close()
+        
