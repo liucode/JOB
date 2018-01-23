@@ -1,33 +1,47 @@
 # -*- coding:utf8 -*-
 
-import win32com.client as win32
+import os
 import sys
 import logging
 import chardet
-from tools import  *
 
-addsys()
+import sys #这里只是一个对sys的引用，只能reload才能进行重新加载
+stdi,stdo,stde=sys.stdin,sys.stdout,sys.stderr 
+reload(sys) #通过import引用进来时,setdefaultencoding函数在被系统调用后被删除了，所以必须reload一次
+sys.stdin,sys.stdout,sys.stderr=stdi,stdo,stde 
+sys.setdefaultencoding('utf-8')
 
 
-# Load MS Word document,change to txt and return the document object  #import win32com
+# Load MS Word document,change to txt and return the document object  #import catdoc
 def convert_doc_to_txt(file):  # takes in a filename and returns a word document object
     try:
         logging.debug('Converting word to txt: ' + str(file))
-        wordapp = win32.Dispatch('Word.Application')
-        wordapp.Visible = False
         # 后缀名doc切词
-        if file[-4:] == '.doc':
+        if file[-4:] == '.doc' or file[-4:] =='.DOC':
             doc2t = file[:-4]
         elif file[-5:] == '.docx':
             doc2t = file[:-5]
-        print file
-        wordapp.Documents.Open(file, False, False)# FileName, ConfirmConversions, ReadOnly
-        wordapp.ActiveDocument.SaveAs(doc2t, FileFormat=win32.constants.wdFormatText)
-        wordapp.ActiveDocument.Close()
-        fin = open(doc2t + '.txt', 'r')
-        strfile = fin.read()
-        #print strfile
-        return strfile
+
+        text_file='%s.txt'%doc2t
+        print type(text_file)#unicode
+
+        os.system("catdoc %s > %s"%(file,text_file))
+
+        with open(text_file, 'r') as fin:
+            strfile = fin.read()
+            print chardet.detect(strfile)
+            if (chardet.detect(strfile)['encoding'] == 'GB2312' ):
+                str_file =strfile.decode("gbk", 'ignore').encode("utf-8", 'ignore')
+            elif ((chardet.detect(strfile)['encoding'] == 'utf-8') or (
+                    chardet.detect(strfile)['encoding'] == 'UTF-8-SIG')or (
+                    chardet.detect(strfile)['encoding'] == None)):
+                str_file = strfile
+            else:
+                str_file = strfile
+            print str_file
+            #os.system('rm %s'%text_file)
+        return str_file
+
 
     except Exception, e:
         logging.error('Error in file: ' + str(e))
@@ -36,8 +50,5 @@ def convert_doc_to_txt(file):  # takes in a filename and returns a word document
 
 # 将word文档转换为txt格式
 def handle_docfiles(docfile):
-    if docfile[-4:] == '.DOC':
-        doc_file = docfile[:-4] + '.doc'
-    else:
-        doc_file = docfile
-    convert_doc_to_txt(doc_file)
+
+    convert_doc_to_txt(docfile)

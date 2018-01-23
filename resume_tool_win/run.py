@@ -7,7 +7,6 @@ def runresume(input):
     import pythoncom
     pythoncom.CoInitialize()
     handle_document(input.decode('utf-8','ignore'))
-    
     filenames = input.split(".")
     filename = filenames[0]
     for i in range(1,len(filenames)-1):

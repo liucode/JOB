@@ -8,12 +8,9 @@ from pdfminer.pdfpage import PDFPage
 
 import sys
 import logging
-
-import sys #这里只是一个对sys的引用，只能reload才能进行重新加载
-stdi,stdo,stde=sys.stdin,sys.stdout,sys.stderr 
-reload(sys) #通过import引用进来时,setdefaultencoding函数在被系统调用后被删除了，所以必须reload一次
-sys.stdin,sys.stdout,sys.stderr=stdi,stdo,stde 
-sys.setdefaultencoding('utf-8')
+import chardet
+from tools import *
+addsys()
 
 
 def convert_pdf_to_txt(path):
@@ -41,7 +38,7 @@ def convert_pdf_to_txt(path):
         device.close()
         retstr.close()
         # print chardet.detect(text)
-        # print text
+        print text
         return text
     except Exception, e:
         logging.error('Error in file: ' + path + str(e))
