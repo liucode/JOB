@@ -12,6 +12,13 @@ from django.core.urlresolvers import reverse_lazy
 from online.models import *
 from form import MessageForm, PostForm
 from django.db.models import Q
+from django.shortcuts import render,render_to_response
+from forum.validate import create_validate_code
+
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
 
 PAGE_NUM = 50
 class BaseMixin(object):
@@ -74,6 +81,7 @@ def get_online_ips_count():
 
 #帖子
 def postdetail(request,post_pk):
+    print request.session['islogin']
     post_pk = int(post_pk)
     post = Post.objects.get(pk=post_pk)
     comment_list = post.comment_set.all()    
@@ -90,7 +98,7 @@ def postdetail(request,post_pk):
         post.save()
         visited_ips.append(ip)
     cache.set(title,visited_ips,15*60)
-    return render_to_response('post_detail.html',{'post':post,'comment_list':comment_list})
+    return render(request,'post_detail.html',{'post':post,'comment_list':comment_list})
 #用户已发贴
 class UserPostView(ListView):
     template_name = 'user_posts.html'
@@ -118,14 +126,14 @@ class PostCreate(CreateView):
         formdata = form.cleaned_data
         if self.request.session.get('validate',None) != validate:
             return HttpResponse("验证码错误！<a href='/'>返回</a>")
-        user = User.objects.get(username=self.request.user.username)
+        name = self.request.session['user_info']['name']
+        user = User.objects.get(name=name)
         #form.instance.author = user
         #form.instance.last_response  = user
         formdata['author'] = user
         formdata['last_response'] = user
         p = Post(**formdata)
         p.save()
-        user.levels += 5    #发帖一次积分加 5
         user.save()
         return HttpResponse("发贴成功！<a href='/'>返回</a>")
      
@@ -149,9 +157,8 @@ def columnall(request):
 #每个板块
 def columndetail(request,column_pk):
     column_obj = Column.objects.get(pk=column_pk)
-    column_posts = column_obj.post_set.all()
-    
-    return render_to_response('column_detail.html',{'column_obj':column_obj,'column_posts':column_posts },context_instance=RequestContext(request))  
+    column_posts = column_obj.post_set.all() 
+    return render_to_response('column_detail.html',{'column_obj':column_obj,'column_posts':column_posts })  
 #搜索 
 class SearchView(ListView):
     template_name = 'search_result.html'
@@ -168,3 +175,34 @@ class SearchView(ListView):
         #在帖子的标题和内容中搜索关键字
         post_list = Post.objects.only('title','content').filter(Q(title__icontains=q)|Q(content__icontains=q));
         return post_list
+    
+def validate(request):
+    mstream = StringIO.StringIO()
+    validate_code = create_validate_code()
+    img = validate_code[0]
+    img.save(mstream, "GIF")
+    request.session['validate'] = validate_code[1]
+    
+    return HttpResponse(mstream.getvalue(), "image/gif")
+
+def makecomment(request):
+    if request.method == 'POST':
+        comment = request.POST.get("comment","")
+        post_id = request.POST.get("post_id","")
+        comment_id = request.POST.get("comment_id","")
+        name = request.session['user_info']['name']
+        user = User.objects.get(name=name)
+        p = Post.objects.get(pk=post_id)
+        p.responce_times += 1
+        p.last_response = user
+      
+        if comment_id:
+            p_comment = Comment.objects.get(pk=comment_id)
+            c = Comment(post=p,author=user,comment_parent=p_comment,content=comment)
+            c.save()
+        else:
+            c = Comment(post=p,author=user,content=comment)
+            c.save()
+        p.save()
+        user.save()
+    return HttpResponse("评论成功")

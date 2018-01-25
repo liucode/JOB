@@ -2,9 +2,12 @@
 
 <link rel="stylesheet" type="text/css" href="/static/css/post_detail.css"> 			
 
-
 {% block body %}
-
+<div id="popDiv" class="mydiv" style="display:none;">
+<textarea id="comment" name="comment" class="form-control" rows="5" cols=35 placeholder="请输入评论 限200字!"></textarea>
+<br/>
+<a href="javascript:closeDivFun()">评论</a>
+</div>
 <!-- zoopda navigation start -->
 
 <!-- End -->
@@ -14,16 +17,6 @@
 		<div class="avatar">
 		<img src="{{ post.author.avatar}}" border="0"><br>
                 用户名：{{ post.author.username }}<br>
-		积分：{{ post.author.levels }}<br>
-		{% if user.username %}
-          {% ifnotequal  post.author.username user.username %}
-                      {%if not post.author|checkfriend:user %}
-				              <a href="{% url 'make_friend' user.username post.author.username %}">加好友</a>
-		                  {% else %}
-				              <a href="{% url 'send_message' post.author.id %}">发消息</a>
-		                  {% endif %}
-		      {% endifnotequal %}
-		{% endif %}
 		</div>
 		<div class="content">
 			<font size="8" face="arial" color="red">标题：{{ post.title }}</font>
@@ -60,16 +53,6 @@
                 	<img src="http://vmaig.qiniudn.com/image/tx/tx-default.jpg" width="40"></img><br>
                 {%endif%}
                 	用户名：{{ comment.author.username }}<br>
-			积分：{{ comment.author.levels }}<br>
-			{% if user.username %}
-			    {% ifnotequal  comment.author.username user.username %}
-		        	{%if not comment.author|checkfriend:user %}
-				        <a href="{% url 'make_friend' user.username comment.author.username %}">加好友</a>
-              {% else %}
-				        <a href="{% url 'send_message' comment.author.id %}">发消息</a>
-		          {% endif %}
-			    {% endifnotequal %}
-			{% endif %}
             </div>
             <div class="content_comment">
                 <p>{% if comment.comment_parent %}回复{{comment.comment_parent.author}} 发表于{{comment.comment_parent.created_at|date:"Y-m-d H:i:s"}}的内容《{{comment.comment_parent.content}}》; {% endif %}{{comment.created_at|date:"Y-m-d H:i:s" }}</p>
@@ -105,7 +88,7 @@
 //弹出调用的方法
 commentid=0;
 function showDivFun(comment_id){
-    {% if not user.is_authenticated %}
+   {% if not request.session.islogin %}
         alert("请登录后评论！")
         location.reload();
     {% endif %}
@@ -114,12 +97,11 @@ function showDivFun(comment_id){
     
 }
 //关闭事件
-function closeDivFun(){
-    
+function closeDivFun(){ 
     document.getElementById('popDiv').style.display='none';
     $.ajax({
             type:"POST",
-            url:"/makecomment/",
+            url:"../../makecomment/",
             data:{"comment":$("#comment").val(),"comment_id":commentid,"post_id":{{post.pk}},},
             //beforeSend:function(xhr){
                 //xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));  
@@ -135,13 +117,13 @@ function closeDivFun(){
 }
  
     $('#vmaig-comment-form').submit(function(){
-	{% if not user.is_authenticated %}
+	{% if not request.session.islogin %}
         alert("请登录后评论！")
         return false;
         {% endif %}
         $.ajax({
             type:"POST",
-            url:"{% url 'make_comment'%}",
+            url:"../../makecomment/",
             data:{"comment":$("#comment2").val(),"post_id":{{post.pk}}},
             success:function(data,textStatus){
                 location.reload();
