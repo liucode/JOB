@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^intr/', include('intr.urls')), 
     url(r'^company/', include('company.urls')), 
     url(r'^resume/', include('resume.urls')), 
+    url(r'^forum/', include('forum.urls')), 
 ]

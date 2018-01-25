@@ -127,7 +127,10 @@ def process(input_file_path):
         try:
             line = line.strip().decode('utf-8') # 设置编码格式
         except:
-            line = line.strip().decode('gb2312')   
+            try:
+                line = line.strip().decode('gb2312') 
+            except:
+                continue  
         all_line = all_line +line     
         info_list = school_info_extract(line)  
         for info in info_list:
