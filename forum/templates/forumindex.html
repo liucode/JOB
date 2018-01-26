@@ -1,56 +1,22 @@
 {% extends "./base.html" %}
 {% block body %} 
-<div class="search" id="scarch_bar">
-<form id="scarch_bar_form" method="get" autocomplete="off" onSubmit="searchFocus($(&#39;scarch_bar_txt&#39;))" action=" 。。/search'">
-           <div class="input">
-            <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tbody><tr>
-                    <td>
-                        
-                        <input id="scarch_bar_txt" name="srchtxt" type="text" dir="ltr" size="35" spellcheck="false" value="" autocomplete="off" x-webkit-speech="" speech="" class=" xg1" placeholder="请输入搜索内容">
-                    </td>
-                    <td width="40" align="right">
-                        <a href="javascript:;" id="scarch_bar_type" class="showmenu xg1 xs2" onClick="showMenu(this.id)" hidefocus="true">帖子</a>
-                    </td>
-                </tr>
-            </tbody></table>
-           
-        </div>
-        <button type="submit" name="searchsubmit" id="searchsubmit" sc="1" class="button" value="true"><strong class="xi2 xs2">搜索</strong></button>
-        
-    </form>
+
+<div class="container-fluid" >
+		<form id="scarch_bar_form" method="get" onSubmit="searchFocus($(&#39;scarch_bar_txt&#39;))" action=" 。。/search'">
+                        <input id="scarch_bar_txt" name="srchtxt" type="text" dir="ltr" spellcheck="false" value="" autocomplete="off" x-webkit-speech="" speech=""  placeholder="请输入搜索内容">
+        	     		<button type="submit" name="searchsubmit" id="searchsubmit" sc="1"   class="btn btn-primary " value="true">搜索</button> 
+    					<a href="../post_create"><strong class="xi2 xs2">发帖</strong></a>
+         </form>  
+   	
+ </div>
+	<ul id="scarch_bar_type_menu" class="p_pop" style="display: none;"><li><a href="javascript:;" rel="forum" class="curtype">帖子</a></li><li><a href="javascript:;" rel="user">用户</a></li></ul>
+	<script type="text/javascript">
+    initSearchmenu('scarch_bar', '');
+	</script>
+
 </div>
-<ul id="scarch_bar_type_menu" class="p_pop" style="display: none;"><li><a href="javascript:;" rel="forum" class="curtype">帖子</a></li><li><a href="javascript:;" rel="user">用户</a></li></ul>
-<script type="text/javascript">
-    //initSearchmenu('scarch_bar', '');
-</script>
-                        <!-- 搜索 End -->
 
 
-                                          <!-- 用户账户 End -->
-                    </div>
-                </div>
-
-                <!-- 子导航 Start -->
-                    <div class="subnav">
-    <div class="wrap">
-        <!-- text menu start -->
-        <div class="bo_nav clearfix" id="category">   
-         
-            <!-- Fast Invitation start -->
-            <ul>
-                <li class="fast-tool"><a href="../post_create">发帖</a></li>
-                            </ul>
-            <!-- End -->
-
-        </div>
-        <!-- End -->
-    </div>
-</div>                <!-- 子导航 End -->
-
-              </div>
-
-<div class="main clearfix">
 
 <!-- zoopda navigation start -->
 
@@ -60,38 +26,24 @@
 <link rel="stylesheet" type="text/css" href="/static/css/style_21_forum_index.css"> 
 <link type="text/css" rel="stylesheet" href="chrome-extension://olmanbchlogbfhhgimnombopppdooidm/css/style.css"></head>	
 <link id="css_forum_moderator" type="text/css" rel="stylesheet" href="/static/css/style_21_forum_moderator.css">
-<div class="wrap">
-
-    	<!-- Diy area start -->
-        	                    
- 
-                <!-- End -->
-
-        <!-- Banner start -->
-<!-- end -->
-
-        <!-- text start -->
-        	<div class="con box">
-
-               
-            	<!-- End -->
-                
-                <!-- text theme list start -->
-                <div class="list" id="threadlist" style="position: relative;">
-<script src="/static/js/forum_moderate.js" type="text/javascript"></script>
+<div class="container-fluid">
+	<div class="con box">
+          <div class="list" id="threadlist" style="position: relative;">
+	<script src="/static/js/forum_moderate.js" type="text/javascript"></script>
+	
 <form method="post" autocomplete="off" name="moderate" id="moderate" action="">
-<input type="hidden" name="formhash" value="31213a3e">
-<input type="hidden" name="listextra" value="">
+	<input type="hidden" name="formhash" value="31213a3e">
+	<input type="hidden" name="listextra" value="">
 
 
-
+<!--table-->
 {% if post_list %}
 {% for post in post_list %}
 <table width="100%">			
         <tbody><tr id="post">
             <td width="10%" class="avatar" valign="middle">
 		<a href="{{ post.get_absolute_url }}" title="">
-			<img src="{{ post.author.avatar }}">
+			<img src="{{ post.author.head_image }}">
 		</a>
             </td>
             
@@ -105,11 +57,11 @@
                     
                     <div class="date"><span title="">发表于{{ post.created_at|date:"Y-m-d H:i:s" }}</span></div>
                     <span>•</span>
-                    <div class="author">{{ post.author }}</div>
+                    <div class="author">{{ post.author.name }}</div>
                                         <span>•</span>
                                         
                     <div class="lastreply">
-                        <a href="" target="_blank" title="1 分钟前">{{ post.last_response }}最后回复</a>
+                        <a href="" target="_blank" title="1 分钟前">{{ post.last_response.name }}最后回复</a>
                     </div>
                     
                                     </div>
@@ -122,13 +74,14 @@
     </tbody></table>
     {% endfor %}
 {% endif %}
-            </form>
-</div>
-                <!-- End -->
+<!--table end-->
+</form>
+	</div>
+                <!--list End -->
 
-                <!-- Page start -->
-                    <div class="pages clearfix">
-        <div class="backhome" id="visitedforumstmp" onMouseOver="$(&#39;visitedforums&#39;).id = &#39;visitedforumstmp&#39;;this.id = &#39;visitedforums&#39;;showMenu({&#39;ctrlid&#39;:this.id,&#39;pos&#39;:&#39;21&#39;})"><a href="/">返&nbsp;回</a></div>
+           <!-- Page start -->
+        <div class="pages clearfix">
+         <div class="backhome" id="visitedforumstmp" onMouseOver="$(&#39;visitedforums&#39;).id = &#39;visitedforumstmp&#39;;this.id = &#39;visitedforums&#39;;showMenu({&#39;ctrlid&#39;:this.id,&#39;pos&#39;:&#39;21&#39;})"><a href="/">返&nbsp;回</a></div>
 		
             <ul class="num">
 			<?php pagenavi(); ?>
@@ -140,22 +93,12 @@
 
         <!-- Right block start -->
             <div class="sub">
-            <div class="sub">
-
-    
-    
-    <!-- 版规 Start -->
+   					 <!-- 版规 Start -->
         
-    <!-- 版规 End -->
-
-
-    
-    <!-- 热门板块 Start -->
+    				<!-- 版规 End -->
+<!-- 热门板块 Start -->
     <div class="box sidewidget">
-        <h5 class="clearfix">
-         热门版块
-         <!-- <a href="#" class="floatr cicon">VEER团购499</a> -->
-              </h5>
+        <h5 class="clearfix">热门版块</h5>
      <div class="hotbo sidebox">
         <ul>
 	    {% for column in column_list %}
@@ -174,16 +117,15 @@
                 </li>
 	    {% endfor %}
             
-                                </ul>
+         </ul>
     </div>
-</div>
 <!-- 热门板块 End -->
 
 <!-- 彩色 Start --><!-- 彩色 End -->
 
 
 <!-- BBS状态 Start -->
-<div class="favorite box sidewidget">
+	<div class="favorite box sidewidget">
     <h5 class="clearfix">热点帖子</h5>
     <div class="list sidebox">
         <ul>
@@ -194,9 +136,9 @@
 	{% endfor %}
 	</ul>
     </div>
-</div>
+	</div>
 
-<div class="box sidewidget">
+	<div class="box sidewidget">
     <h5 class="clearfix">论坛统计</h5>
     <div class="list sidebox">
         <ul>
@@ -208,7 +150,7 @@
             
                     </ul>
     </div>
-</div>
+	</div>
 <!-- BBS状态 End -->
 
 <!-- BBS微信QR码 Start -->
@@ -218,24 +160,25 @@
 	<ul>
 	{% for last_comment in last_comments %}
 		<li>
-		<a href="{{ last_comment.get_absolute_url }}">{{ last_comment.author }}:{{ last_comment.content }}</a>
+		<a href="{{ last_comment.get_absolute_url }}">{{ last_comment.author.name }}:{{ last_comment.content }}</a>
 		</li>	
 	{% endfor %}
 	</ul>
         <!-- <img alt="煮机网" src="<?php bloginfo('stylesheet_directory'); ?>/images/qr_zoopda.gif">-->
     </div>
     
-</div>
+	</div>
 <!-- BBS微信QR码 End -->
 
-</div>            </div>
+</div>            
+</div>           
+</div>
         <!-- End -->
-    </div>
-
 {% endblock %}
-                         
+ 
+{% block footer %}                         
 
-</div>        
+       
         
     
 
@@ -277,6 +220,6 @@
 <div id="yunpan_image_hover_container" style="z-index: 410; left: 298px; top: 187px;"><style>            #yunpan_image_hover_container {                width: 23px;                height: 100px;                background-image: url(chrome-extension://olmanbchlogbfhhgimnombopppdooidm/images/hover-vertical.png);                background-position: -33px 0;            }            #yunpan_image_hover_container:hover {background-image: url(chrome-extension://olmanbchlogbfhhgimnombopppdooidm/images/hover-vertical.png);}            </style></div>
 <?php wp_footer(); ?>
 
-</body></html>
+{% endblock %}
 
 

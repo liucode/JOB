@@ -38,7 +38,7 @@ class Column(models.Model):                            #板块
         return self.name
 
     def get_absolute_url(self):
-        return reverse('column_detail',urlconf = "forum.urls",kwargs={'column_pk': self.pk })
+        return "../../forum"+reverse('column_detail',urlconf = "forum.urls",kwargs={'column_pk': self.pk })
         
 class PostType(models.Model):            #文章类型
     type_name = models.CharField(max_length=30)
@@ -52,14 +52,14 @@ class PostType(models.Model):            #文章类型
 
 class Post(models.Model):                    #文章
     title = models.CharField(max_length=30)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='post_author')                #作者
+    author = models.ForeignKey(User,related_name='post_author')                #作者
     column = models.ForeignKey(Column)                        #所属板块
     type_name = models.ForeignKey(PostType)                        #文章类型
     content = models.TextField()
     
     view_times = models.IntegerField(default=0)        #浏览次数
     responce_times = models.IntegerField(default=0)        #回复次数
-    last_response = models.ForeignKey(settings.AUTH_USER_MODEL)                            #最后回复者
+    last_response = models.ForeignKey(User)                            #最后回复者
     
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
@@ -76,14 +76,13 @@ class Post(models.Model):                    #文章
     def description(self):
         return u'%s 发表了主题《%s》' % (self.author, self.title)
     
-    @models.permalink
     def get_absolute_url(self):
-        return ('post_detail', (), {'post_pk': self.pk })
+        return "../../forum"+reverse('post_detail',urlconf = "forum.urls",kwargs={'post_pk': self.pk })
         
        
 class Comment(models.Model):                #评论    
     post = models.ForeignKey(Post)                        
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)                        
+    author = models.ForeignKey(User)                        
     comment_parent = models.ForeignKey('self', blank=True, null=True,related_name='childcomment')                        
     content = models.TextField()
    
@@ -101,13 +100,12 @@ class Comment(models.Model):                #评论
     def description(self):
         return u'%s 回复了您的帖子(%s) R:《%s》' % (self.author,self.post, self.content)
     
-    @models.permalink
     def get_absolute_url(self):
-        return ('post_detail', (), { 'post_pk': self.post.pk })
+        return "../../forum"+reverse('post_detail',urlconf = "forum.urls",kwargs= { 'post_pk': self.post.pk })
         
 class Message(models.Model):            #好友消息
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='message_sender')                            #发送者
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='message_receiver')                        #接收者
+    sender = models.ForeignKey(User,related_name='message_sender')                            #发送者
+    receiver = models.ForeignKey(User,related_name='message_receiver')                        #接收者
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
@@ -120,8 +118,8 @@ class Message(models.Model):            #好友消息
         verbose_name_plural = u'消息'
     
 class Application(models.Model):            #好友申请
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='appli_sender')                            #发送者
-    receiver = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='appli_receiver')                        #接收者
+    sender = models.ForeignKey(User,related_name='appli_sender')                            #发送者
+    receiver = models.ForeignKey(User,related_name='appli_receiver')                        #接收者
     status = models.IntegerField(default=0)                #申请状态 0:未查看 1:同意 2:不同意
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
